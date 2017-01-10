@@ -42,12 +42,23 @@ namespace Projet_Mooc
             buttonTab.Add(button33);
             defaut = (SolidColorBrush)button11.Background;
             mapButtonToPlateau();
-            
+            button11.Click += any_button_Click;
+            button12.Click += any_button_Click;
+            button13.Click += any_button_Click;
+            button21.Click += any_button_Click;
+            button22.Click += any_button_Click;
+            button23.Click += any_button_Click;
+            button31.Click += any_button_Click;
+            button32.Click += any_button_Click;
+            button33.Click += any_button_Click;
+
+
 
 
 
         }
-        
+        #region Events_buttons
+
         private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
@@ -61,59 +72,6 @@ namespace Projet_Mooc
             mapButtonToPlateau();
                       
         }
-        #region Méthodes pour modifier plateau et bouttons
-
-        private void mapButtonToPlateau()
-        {
-            Couleur[,] plat = p.Plateau.Cases;
-            for(int i = 0; i<3; i++)
-            {
-                for(int j = 0; j<3; j++)
-                {
-                    int a = (i + 1) * 10 + (j+1);
-                    switch (a)
-                    {
-                        case 11:
-                            button11.Background = matchCellToColor(plat[0, 0]);
-                            break;
-                        case 12:
-                            button12.Background = matchCellToColor(plat[0, 1]);
-                            break;
-                        case 13:
-                            button13.Background = matchCellToColor(plat[0, 2]);
-                            break;
-                        case 21:
-                            button21.Background = matchCellToColor(plat[1, 0]);
-                            break;
-                        case 22:
-                            button22.Background = matchCellToColor(plat[1, 1]);
-                            break;
-                        case 23:
-                            button23.Background = matchCellToColor(plat[1, 2]);
-                            break;
-                        case 31:
-                            button31.Background = matchCellToColor(plat[2, 0]);
-                            break;
-                        case 32:
-                            button32.Background = matchCellToColor(plat[2, 1]);
-                            break;
-                        case 33:
-                            button33.Background = matchCellToColor(plat[2, 2]);
-                            break;
-
-                    }
-                }
-            }
-        }
-
-        private SolidColorBrush matchCellToColor(Couleur c)
-        {
-            if (c == Couleur.Noir)
-                return defaut;
-            else
-                return (new SolidColorBrush(Windows.UI.Colors.WhiteSmoke));  
-        }
-        #endregion
         private void button12_Click(object sender, RoutedEventArgs e)
         {
             clic.X = 1;
@@ -177,5 +135,74 @@ namespace Projet_Mooc
             p.JouerCoup(clic);
             mapButtonToPlateau();
         }
+
+        private void any_button_Click(object sender, RoutedEventArgs e)
+        {
+            int a = p.CoupList.Count();
+            setNbCoups(a);
+            
+        }
+
+        #endregion
+        #region Méthodes pour modifier plateau et bouttons
+
+        private void mapButtonToPlateau()
+        {
+            Couleur[,] plat = p.Plateau.Cases;
+            for(int i = 0; i<3; i++)
+            {
+                for(int j = 0; j<3; j++)
+                {
+                    int a = (i + 1) * 10 + (j+1);
+                    switch (a)
+                    {
+                        case 11:
+                            button11.Background = matchCellToColor(plat[0, 0]);
+                            break;
+                        case 12:
+                            button12.Background = matchCellToColor(plat[0, 1]);
+                            break;
+                        case 13:
+                            button13.Background = matchCellToColor(plat[0, 2]);
+                            break;
+                        case 21:
+                            button21.Background = matchCellToColor(plat[1, 0]);
+                            break;
+                        case 22:
+                            button22.Background = matchCellToColor(plat[1, 1]);
+                            break;
+                        case 23:
+                            button23.Background = matchCellToColor(plat[1, 2]);
+                            break;
+                        case 31:
+                            button31.Background = matchCellToColor(plat[2, 0]);
+                            break;
+                        case 32:
+                            button32.Background = matchCellToColor(plat[2, 1]);
+                            break;
+                        case 33:
+                            button33.Background = matchCellToColor(plat[2, 2]);
+                            break;
+
+                    }
+                }
+            }
+        }
+
+        private SolidColorBrush matchCellToColor(Couleur c)
+        {
+            if (c == Couleur.Noir)
+                return defaut;
+            else
+                return (new SolidColorBrush(Windows.UI.Colors.WhiteSmoke));  
+        }
+
+        private void setNbCoups(int nb)
+        {
+            textBlock1.Text += nb.ToString();
+        }
+
+        #endregion
+        
     }
 }
