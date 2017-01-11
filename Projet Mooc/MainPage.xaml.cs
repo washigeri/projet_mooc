@@ -128,6 +128,7 @@ namespace Projet_Mooc
             button32.IsEnabled = true;
             button33.IsEnabled = true;
             validatebtn.IsEnabled = false;
+            appBarButtonCancel.IsEnabled = false;
             nomField.Text = String.Empty;
             nomText.Text = String.Empty;
             nomField.IsEnabled = false;
@@ -260,6 +261,7 @@ namespace Projet_Mooc
         public async Task WriteFile()
         {
             string filePath = @"Scores.txt";
+            string nom = String.Empty;
             string text = String.Format("{0}    {1}     {2}\n", nomField.Text, p.CoupList.Count, DateTime.Now.ToString("HH:mm:ss - dd/MM/yyyy"));
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             StorageFile file = await storageFolder.CreateFileAsync(filePath, CreationCollisionOption.OpenIfExists);
