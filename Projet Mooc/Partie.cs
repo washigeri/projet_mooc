@@ -38,7 +38,7 @@ namespace Projet_Mooc
     class Partie
     {
         private Plateau plateau;
-        private List<coup> coupList;
+        private Stack<coup> coupList;
 
         internal Plateau Plateau
         {
@@ -53,7 +53,7 @@ namespace Projet_Mooc
             }
         }
 
-        internal List<coup> CoupList
+        internal Stack<coup> CoupList
         {
             get
             {
@@ -69,15 +69,15 @@ namespace Projet_Mooc
         public Partie()
         {
             Plateau = new Plateau();
-            CoupList = new List<coup>();
+            CoupList = new Stack<coup>();
 
         }
 
-        public bool JouerCoup(coup clic)
+        public void JouerCoup(coup clic)
         {
-            this.Plateau.appliqueCoup(clic);
-            this.coupList.Add(clic);
-            return (this.Plateau.EstGagnant);
+            Plateau.appliqueCoup(clic);
+            coupList.Push(clic);
+            
         }
 
 

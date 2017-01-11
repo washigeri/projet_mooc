@@ -11,7 +11,7 @@ namespace Projet_Mooc
     class Plateau
         {
         private Couleur[,] cases;
-        public bool EstGagnant;
+        
 
 
         internal Couleur[,] Cases
@@ -30,7 +30,7 @@ namespace Projet_Mooc
         public Plateau()
         {
             Cases = new Couleur[3,3]{ { Couleur.Noir, Couleur.Noir, Couleur.Noir}, { Couleur.Noir, Couleur.Noir, Couleur.Noir}, { Couleur.Noir, Couleur.Noir, Couleur.Noir} };
-            EstGagnant = false; 
+            
         }
 
         public bool PlateauGagnant()

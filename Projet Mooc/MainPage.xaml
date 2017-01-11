@@ -6,6 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+
+    </Page.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -13,7 +16,11 @@
                 <ColumnDefinition Width="669*"/>
                 <ColumnDefinition Width="697*" />
             </Grid.ColumnDefinitions>
-            <Grid HorizontalAlignment="Left" Height="413" Margin="0,147,0,0" VerticalAlignment="Top" Width="571" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="87*"/>
+                <RowDefinition Height="41*"/>
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Left" Height="413" Margin="70,96,0,0" VerticalAlignment="Top" Width="571" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*"/>
                     <RowDefinition Height="3*"/>
@@ -35,8 +42,22 @@
                 <Button x:Name="button32" Content="Case 8" HorizontalAlignment="Left" Height="123" Margin="7,7,0,0" VerticalAlignment="Top" Width="177" Grid.Column="1" Grid.Row="2" Click="button32_Click"/>
                 <Button x:Name="button33" Content="Case 9" HorizontalAlignment="Left" Height="123" Margin="7,7,0,0" VerticalAlignment="Top" Width="174" Grid.Column="2" Grid.Row="2" Click="button33_Click"/>
             </Grid>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="44" Margin="72,244,0,0" TextWrapping="Wrap" FontSize="20" VerticalAlignment="Top" Width="283" SelectionChanged="textBlock_SelectionChanged" Text="Case appuyée : Aucune"/>
-            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="29" Margin="72,339,0,0" TextWrapping="Wrap" FontSize="20" Text="Nombre de coups joués :" VerticalAlignment="Top" Width="343"/>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Height="46" Margin="72,339,0,0" TextWrapping="Wrap" FontSize="24" Text="Nombre de coups joués :" VerticalAlignment="Top" Width="470"/>
+            <AppBar x:Name="bottomAppBar" VerticalAlignment="Bottom"  Grid.ColumnSpan="2"  Height="89" Background="BlueViolet" Grid.Row="1">
+                <Grid>
+                    <AppBarButton x:Name="newGameButton" HorizontalAlignment="Left" Icon="Add" Label="Nouvelle Partie" Margin="18,-4,0,0" VerticalAlignment="Top" Click="newGameButton_Click"  />
+
+                </Grid>
+            </AppBar>
+            <TextBlock x:Name="textBlockVictoire" HorizontalAlignment="Left" Height="55" Margin="72,390,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" FontSize="48" FontWeight="Bold"/>
+            <AppBarButton x:Name="appBarButtonCancel" HorizontalAlignment="Left" Height="96" Icon="Cancel"  Label="Annuler" Margin="64,82,0,0" VerticalAlignment="Top" Width="105" Click="appBarButtonCancel_Click" IsEnabled="False"/>
+            <TextBlock x:Name="textBlockscore" Grid.Column="1" HorizontalAlignment="Left" Height="231" Margin="10,5,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="677" FontSize="18" />
+
+            <TextBlock x:Name="nomText" HorizontalAlignment="Left" Height="32" Margin="36,63,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="125" TextAlignment="Center" FontSize="20"/>
+            <TextBox x:Name="nomField" HorizontalAlignment="Left" Height="52" Margin="166,52,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="322" FontSize="20" FontWeight="Bold" TextAlignment="Center" IsEnabled="False"/>
+            <AppBarButton x:Name="validatebtn" HorizontalAlignment="Left" Height="91" Icon="Accept" Label="Valider" Margin="507,29,0,0" Grid.Row="1" VerticalAlignment="Top" Width="102" IsEnabled="False" Click="validatebtn_Click"/>
+
+
         </Grid>
     </ScrollViewer>
 </Page>

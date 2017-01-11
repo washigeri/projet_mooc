@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using System.Text;
+using System.IO;
+using Windows.Storage;
 
 // Pour en savoir plus sur le modèle d'élément Page vierge, consultez la page http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,20 +20,11 @@ namespace Projet_Mooc
         coup clic = new coup();
         Partie p = new Partie();
         SolidColorBrush defaut;
-        List<Button> buttonTab;
+        
         public MainPage()
         {
             this.InitializeComponent();
-            buttonTab = new List<Button>(9);
-            buttonTab.Add(button11);
-            buttonTab.Add(button12);
-            buttonTab.Add(button13);
-            buttonTab.Add(button21);
-            buttonTab.Add(button22);
-            buttonTab.Add(button23);
-            buttonTab.Add(button31);
-            buttonTab.Add(button32);
-            buttonTab.Add(button33);
+            setNbCoups(0);
             defaut = (SolidColorBrush)button11.Background;
             mapButtonToPlateau();
             button11.Click += any_button_Click;
@@ -51,6 +36,8 @@ namespace Projet_Mooc
             button31.Click += any_button_Click;
             button32.Click += any_button_Click;
             button33.Click += any_button_Click;
+            appBarButtonCancel.Click += any_button_Click;
+            
 
 
 
@@ -59,17 +46,13 @@ namespace Projet_Mooc
         }
         #region Events_buttons
 
-        private void textBlock_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
+     
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             clic.X = 1;
             clic.Y = 1;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
                       
         }
         private void button12_Click(object sender, RoutedEventArgs e)
@@ -77,7 +60,6 @@ namespace Projet_Mooc
             clic.X = 1;
             clic.Y = 2;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button13_Click(object sender, RoutedEventArgs e)
@@ -85,7 +67,6 @@ namespace Projet_Mooc
             clic.X = 1;
             clic.Y = 3;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button21_Click(object sender, RoutedEventArgs e)
@@ -93,7 +74,6 @@ namespace Projet_Mooc
             clic.X = 2;
             clic.Y = 1;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button22_Click(object sender, RoutedEventArgs e)
@@ -101,7 +81,6 @@ namespace Projet_Mooc
             clic.X = 2;
             clic.Y = 2;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button23_Click(object sender, RoutedEventArgs e)
@@ -109,7 +88,6 @@ namespace Projet_Mooc
             clic.X = 2;
             clic.Y = 3;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button31_Click(object sender, RoutedEventArgs e)
@@ -117,7 +95,6 @@ namespace Projet_Mooc
             clic.X = 3;
             clic.Y = 1;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
         }
 
         private void button32_Click(object sender, RoutedEventArgs e)
@@ -125,7 +102,7 @@ namespace Projet_Mooc
             clic.X = 3;
             clic.Y = 2;
             p.JouerCoup(clic);
-            mapButtonToPlateau();
+
         }
 
         private void button33_Click(object sender, RoutedEventArgs e)
@@ -133,15 +110,92 @@ namespace Projet_Mooc
             clic.X = 3;
             clic.Y = 3;
             p.JouerCoup(clic);
+            
+        }
+        private void newGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            p = new Partie();
             mapButtonToPlateau();
+            setNbCoups(p.CoupList.Count());
+            textBlockVictoire.Text = String.Empty;
+            button11.IsEnabled = true;
+            button12.IsEnabled = true;
+            button13.IsEnabled = true;
+            button21.IsEnabled = true;
+            button22.IsEnabled = true;
+            button23.IsEnabled = true;
+            button31.IsEnabled = true;
+            button32.IsEnabled = true;
+            button33.IsEnabled = true;
+            validatebtn.IsEnabled = false;
+            nomField.Text = String.Empty;
+            nomText.Text = String.Empty;
+            nomField.IsEnabled = false;
+            textBlockscore.Text = String.Empty;
+            
+
         }
 
-        private void any_button_Click(object sender, RoutedEventArgs e)
+        private void appBarButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                coup last = p.CoupList.Pop();
+                p.Plateau.appliqueCoup(last);
+            }
+            catch (InvalidOperationException)
+            {}
+            
+        }
+
+
+
+
+        private async void any_button_Click(object sender, RoutedEventArgs e)
         {
             int a = p.CoupList.Count();
             setNbCoups(a);
-            
+            var isWin = await Task.Run<Boolean>(() =>
+           {
+               return p.Plateau.PlateauGagnant();
+           });
+            if (isWin)
+            {
+                textBlockVictoire.Text = "Victoire !";
+                button11.IsEnabled = false;
+                button12.IsEnabled = false;
+                button13.IsEnabled = false;
+                button21.IsEnabled = false;
+                button22.IsEnabled = false;
+                button23.IsEnabled = false;
+                button31.IsEnabled = false;
+                button32.IsEnabled = false;
+                button33.IsEnabled = false;
+                await afficheTextScore();
+                
+            }
+            mapButtonToPlateau();
+            if (p.CoupList.Count == 0 || isWin)
+                appBarButtonCancel.IsEnabled = false;
+            else
+                appBarButtonCancel.IsEnabled = true;
+
         }
+
+        private async void validatebtn_Click(object sender, RoutedEventArgs e)
+        {
+            await WriteFile();
+            validatebtn.IsEnabled = false;
+            await afficheTextScore();
+            validatebtn.IsEnabled = false;
+            nomField.Text = String.Empty;
+            nomText.Text = String.Empty;
+            nomField.IsEnabled = false;
+
+        }
+
+        
+
 
         #endregion
         #region Méthodes pour modifier plateau et bouttons
@@ -199,10 +253,71 @@ namespace Projet_Mooc
 
         private void setNbCoups(int nb)
         {
-            textBlock1.Text += nb.ToString();
+            textBlock1.Text = String.Format("Nombre de coups joués: {0}", nb.ToString());
+            
         }
 
+        public async Task WriteFile()
+        {
+            string filePath = @"Scores.txt";
+            string text = String.Format("{0}    {1}     {2}\n", nomField.Text, p.CoupList.Count, DateTime.Now.ToString("HH:mm:ss - dd/MM/yyyy"));
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            StorageFile file = await storageFolder.CreateFileAsync(filePath, CreationCollisionOption.OpenIfExists);
+
+
+            await WriteTextAsync(file, text);
+        }
+
+        private async Task WriteTextAsync(StorageFile filePath, string text)
+        {
+
+
+            await Windows.Storage.FileIO.AppendTextAsync(filePath, text);
+        }
+
+
+        public async Task ReadFile()
+        {
+            string filePath = @"Scores.txt";
+            try
+            {
+                string text = await ReadTextAsync(filePath);
+                textBlockscore.Text = text;
+            }
+            catch (Exception)
+            {}
+
+        }
+
+        private async Task<string> ReadTextAsync(string filePath)
+        {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile storageFile = await storageFolder.GetFileAsync(filePath);
+            StringBuilder sb = new StringBuilder();
+
+            var buffer = await FileIO.ReadBufferAsync(storageFile);
+            using (var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+            {
+                string text = dataReader.ReadString(buffer.Length);
+                return text;
+            }
+                       
+        }
+
+        private async Task afficheTextScore()
+        {
+            nomText.Text = "Nom:";
+            nomField.IsEnabled = true;
+            validatebtn.IsEnabled = true;
+            await ReadFile();
+
+        }
+
+
+
+
         #endregion
-        
+
+
     }
 }
